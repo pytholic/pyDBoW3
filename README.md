@@ -1,30 +1,60 @@
-# pyORBSLAM2
-*Ultra-fast Boost.Python interface for [ORBSLAM2](https://github.com/raulmur/ORB_SLAM2)*
+# pyDBoW3
+*Ultra-fast Boost.Python interface for [DBoW3](https://github.com/rmsalinas/DBow3.git)*
 
-Are you using ORBSLAM2 for your latest tracking project? Do you just want to create a quick prototype, or are you weary of writing C++ code? Then this repository is for you! Simply interface ORBSLAM2 from python2.x/3, using your favourite NumPy arrays as necessary. It is as easy as:
+This repo was created in order to interface DBoW algorithm from python in another project [EasyVision](https://github.com/foxis/EasyVision.git). It is being used for a simple topological SLAM implementation since OpenCV BowKMeansTrainer doesn't work with binary features.
+If you wish you use it on your own it is as easy as:
 
 ```python
-import ORBSLAM2 as os2
-slam_obj = os2.SLAM()
-slam_obj.init("/slamdoom/libs/orbslam2/Vocabulary/ORBvoc.txt",\
-              "/slamdoom/libs/orbslam2/Examples/RGB-D/TUM1.yaml")
-slam_obj.track(array, array_d, time.time())
-del slam_obj
+import pyDBoW3 as bow
+voc = bow.Vocabulary()
+voc.load("/slamdoom/libs/orbslam2/Vocabulary/ORBvoc.txt")
+db = bow.Database()
+db.setVocabulary(voc)
+del voc
+# extract features using OpenCV
+...
+# add features to database
+for features in features_list:
+  db.add(features)
+  
+# query features
+feature_to_query = 1
+results = db.query(features_list[feature_to_query])
+
+del db
 ```
 
+This repository was created based on [pyORBSLAM2](https://github.com/raulmur/ORB_SLAM2.git) and ndarray to cv::Mat conversion on [numpy-opencv-converter](https://github.com/GarrickLin/numpy-opencv-converter.git).
 
-![Isn't it cute? :) ](https://cdn.pixabay.com/photo/2014/04/02/14/05/snake-306109_640.png)
-
-You can use this repo as a basis for any other Boost.Python projects as well.
-
-Please contact me at cs@robots.ox.ac.uk any time and I will assist you!
-
-Best, Christian Schroeder de Witt, Torr Vision Group, University of Oxford, 2017
+NOTE: Mainly tested on Windows using OpenCV 4.0.0 and Python 2.7.
 
 # Get started
 
-Use run.sh to run nvidia-docker environment to build build/ORBSLAM2.so, which you should then put on your PYTHONPATH.
-See test/test.py for an example. Extend orbslam2.cpp to your needs (comes with NumPy/cv::Mat conversion routines, and already includes Boost::Python::NumPy set up for you should you need it)
+## Windows
+
+Prerequisites:
+* OpenCV
+* Python 2.7 with Numpy and opencv-contrib-python
+* Boost 1.67
+* [DBoW3](https://github.com/rmsalinas/DBow3.git)
+* cmake
+* Microsoft Visual Studio (with python package)
+
+To build Boost.Python, go to Boost root and run:
+
+`bootstrap.bat --prefix=/dir/to/Boost.Build`
+
+Then build Boost.Python like this:
+
+`/dir/to/Boost.Build/b2 --with-python`
+
+To build DBoW3, simply use cmake-gui to generate a MSVC solution. And then build using that solution.
+
+Then you can use cmake-gui to create MSVC solution for pyDBoW3 and build it. Note that you will have to copy `DBoW3.dll`, `opencv*.dll` and `pyDBoW3.pyd` in the same directory and on `PYTHONPATH`. 
+
+## Unix
+Use run.sh to run nvidia-docker environment to build build/pyDBoW.so, which you should then put on your PYTHONPATH.
+See tests for an example.
 
 See below more detailed steps on how to set up the tutorial examples.
 
@@ -49,18 +79,10 @@ Now, inside the container SSH shell, simply do:
 
 `/orbslam/src/build.sh`
 
-`export PYTHONPATH=/orbslam/src/build:$PYTHONPATH`
+`export PYTHONPATH=/dbow3/src/build:$PYTHONPATH`
 
 Now you should be able to try the test example inside the container:
 
-`python3 /orbslam/src/test/test.py`
+`pytest`
 
 (press key for GUI windows to open)
-
-The above is for Python3 only, if you require Python2.x support or have any other questions / issues, please contact me:
-
-[cs@robots.ox.ac.uk](mailto:cs@robots.ox.ac.uk)
-
-All the best
-
-Christian
