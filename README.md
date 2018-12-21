@@ -46,7 +46,7 @@ To build Boost.Python, go to Boost root and run:
 
 Then build Boost.Python like this:
 
-`/dir/to/Boost.Build/b2 --with-python`
+`/dir/to/Boost.Build/b2 --with-python threading=multi variant=release link=static`
 
 To build DBoW3, simply use cmake-gui to generate a MSVC solution. And then build using that solution.
 
