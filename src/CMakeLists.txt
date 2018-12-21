@@ -22,6 +22,7 @@ set(pyDBOW3_VERSION_ID ${pyDBOW3_MAJOR_VERSION}${pyDBOW3_MINOR_VERSION}${pyDBOW3
 # Building options
 #-----------------------------------------------------------------------------------------------------------------------
 option(BUILD_PYTHON3 "Build DBow3 Python3 binding instead of default Python2." OFF)
+OPTION(BUILD_STATICALLY_LINKED 	"Set to OFF to link with opencv and DBoW3 dynamically" ON)
 
 SET (BOOST_ROOT "c:/boost_1_67_0/")
 
@@ -159,7 +160,7 @@ endif ()
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${NUMPY_INCLUDES} lib/)
 #LINK_LIBRARIES(${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES}) # Deprecated but so convenient!
 
-if (WIN32)
+if (BUILD_STATICALLY_LINKED)
     add_definitions(-DBOOST_PYTHON_STATIC_LIB)
 endif ()
 
@@ -173,24 +174,19 @@ target_link_libraries(np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES}
 #boost_python_module(pyDBoW3 dbow3.cpp)
 add_library(pyDBoW3 SHARED dbow3.cpp)
 target_compile_options(pyDBoW3 PRIVATE -DBOOST_ALL_NO_LIB)
-target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${PROJECT_NAME})
+
+if (BUILD_STATICALLY_LINKED)
+	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${PROJECT_NAME} "-static")
+else ()
+	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${PROJECT_NAME})
+endif ()
 
 
-
-# python_add_module(pyDBoW3 ${DBOW3_PYTHON_SOURCES})
-#target_link_libraries(pyDBoW3 ${DBoW3_LIBRARIES}  ${PROJECT_NAME})
-
-
-#set_target_properties(pyDBoW3
-#            PROPERTIES
-#            LIBRARY_OUTPUT_DIRECTORY ${DBOW3_OUTPUT_DIR}
-#            LIBRARY_OUTPUT_DIRECTORY_DEBUG ${DBOW3_OUTPUT_DIR}
-#            LIBRARY_OUTPUT_DIRECTORY_RELEASE ${DBOW3_OUTPUT_DIR}
-#            LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL ${DBOW3_OUTPUT_DIR}
-#            LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${DBOW3_OUTPUT_DIR}
-#            OUTPUT_NAME pyDBoW3
-#            PROJECT_LABEL "Python binding")
-set_target_properties(pyDBoW3 PROPERTIES PREFIX "" SUFFIX ".pyd")
+if (NOT UNIX)
+	set_target_properties(pyDBoW3 PROPERTIES PREFIX "" SUFFIX ".pyd")
+else ()
+	set_target_properties(pyDBoW3 PROPERTIES PREFIX "")
+endif()
 
 # ------------------------------------ DBOW3 section
 

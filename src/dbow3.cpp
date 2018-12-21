@@ -89,6 +89,10 @@ public:
 		return word;
 	}
 
+	double score(const  DBoW3::BowVector &A, const DBoW3::BowVector &B) {
+		return vocabulary->score(A, B);
+	}
+
 	DBoW3::Vocabulary * vocabulary;
 };
 
@@ -125,6 +129,13 @@ public:
 	void load(const std::string &filename) {
 		database->load(filename);
 	}
+
+	void loadVocabulary(const std::string &filename) {
+		DBoW3::Vocabulary voc;
+		voc.load(filename);
+		database->setVocabulary(voc);
+	}
+
 
 private:
 	DBoW3::Database * database;
@@ -163,6 +174,7 @@ namespace fs {
 				.def("save", &Vocabulary::save)
 				.def("create", &Vocabulary::create)
 				.def("transform", &Vocabulary::transform)
+				.def("score", &Vocabulary::score)
 				.def("clear", &Vocabulary::clear);
 
 			py::class_<Database>("Database")
@@ -170,6 +182,7 @@ namespace fs {
 				.def("setVocabulary", &Database::setVocabulary)
 				.def("save", &Database::save)
 				.def("load", &Database::load)
+				.def("loadVocabulary", &Database::loadVocabulary)
 				.def("query", &Database::query);
 
 			py::class_<DBoW3::Result>("Result")
