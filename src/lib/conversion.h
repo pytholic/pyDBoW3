@@ -9,6 +9,8 @@
 #include <opencv2/core/core.hpp>
 #include <numpy/ndarrayobject.h>
 
+#define CV_MAX_DIM 32
+
 static PyObject* opencv_error = 0;
 
 static int failmsg(const char *fmt, ...);

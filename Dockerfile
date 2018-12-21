@@ -67,10 +67,10 @@ RUN chmod +x /slamdoom/install/opencv3/install.sh && /slamdoom/install/opencv3/i
 
 
 #### -------------------------------------------------------------------
-#### Install ORBSLAM2
+#### Install DBow3
 #### -------------------------------------------------------------------
-ADD ./install/orbslam2 /slamdoom/install/orbslam2
-RUN chmod +x /slamdoom/install/orbslam2/install.sh && /slamdoom/install/orbslam2/install.sh
+ADD ./install/dbow3 /slamdoom/install/dbow3
+RUN chmod +x /slamdoom/install/dbow3/install.sh && /slamdoom/install/dbow3/install.sh
 
 
 ############################################
