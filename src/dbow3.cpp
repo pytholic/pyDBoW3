@@ -59,42 +59,58 @@ class Vocabulary
 {
 public:
 	Vocabulary(int k = 10, int L = 5, DBoW3::WeightingType weighting = DBoW3::TF_IDF, DBoW3::ScoringType scoring = DBoW3::L1_NORM, const std::string& path = std::string()) {
+		vocabulary = new DBoW3::Vocabulary(k, L, weighting, scoring);
+		if (!path.empty())
+			load(path);
 	}
 	~Vocabulary() {
+		delete vocabulary;
 	}
 	
 	void create(const  std::vector<cv::Mat>   &training_features) {
+		vocabulary->create(training_features);
 	}
 	
 	void clear() {
+		vocabulary->clear();
 	}
 
 	void load(const std::string& path) {
+		vocabulary->load(path);
 	}
 
 	void save(const std::string& path, bool binary_compressed = true) {
+		vocabulary->save(path, binary_compressed);
 	}
 
-	DBoW3::BowVector transform(const  cv::Mat & features) {
+	DBoW3::BowVector transform(const  std::vector<cv::Mat> & features) {
 		DBoW3::BowVector word;
+		vocabulary->transform(features, word);
 		return word;
 	}
 
-private:
+	DBoW3::Vocabulary * vocabulary;
 };
 
 class Database
 {
 public:
 	Database(const std::string& path = std::string()) {
+		if (path.empty())
+			database = new DBoW3::Database();
+		else
+			database = new DBoW3::Database(path);
 	}
 	~Database() {
+		delete database;
 	}
 
-	void setVocabulary(Vocabulary& vocabulary) {
+	void setVocabulary(const Vocabulary& vocabulary) {
+		database->setVocabulary(*vocabulary.vocabulary);
 	}
 
-	int add(const  cv::Mat & features) {
+	unsigned int add(const  cv::Mat & features) {
+		return database->add(features, NULL, NULL);
 	}
 
 	std::vector<DBoW3::Result> query(const  cv::Mat &features, int max_results = 1, int max_id = -1) {
@@ -102,7 +118,16 @@ public:
 		return results;
 	}
 
+	void save(const std::string &filename) const {
+		database->save(filename);
+	}
+
+	void load(const std::string &filename) {
+		database->load(filename);
+	}
+
 private:
+	DBoW3::Database * database;
 };
 
 // Wrap a few functions and classes for testing purposes
@@ -143,9 +168,19 @@ namespace fs {
 			py::class_<Database>("Database")
 				.def(py::init<py::optional<std::string> >(py::arg("path") = std::string()))
 				.def("setVocabulary", &Database::setVocabulary)
+				.def("save", &Database::save)
+				.def("load", &Database::load)
 				.def("query", &Database::query);
 
-			//py::class_< DBoW3::BowVector>("BowVector");
+			py::class_<DBoW3::Result>("Result")
+				.def_readonly("Id", &DBoW3::Result::Id)
+				.def_readonly("Score", &DBoW3::Result::Score)
+				.def_readonly("nWords", &DBoW3::Result::nWords)
+				.def_readonly("bhatScore", &DBoW3::Result::bhatScore)
+				.def_readonly("chiScore", &DBoW3::Result::chiScore)
+				.def_readonly("sumCommonVi", &DBoW3::Result::sumCommonVi)
+				.def_readonly("sumCommonWi", &DBoW3::Result::sumCommonWi)
+				.def_readonly("expectedChiScore", &DBoW3::Result::expectedChiScore);
 		}
 
 	} // namespace fs

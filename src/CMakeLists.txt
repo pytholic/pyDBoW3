@@ -92,6 +92,16 @@ LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../../../cmake_modules)
 find_package(OpenCV REQUIRED)
 find_package(DBoW3 REQUIRED)
 
+
+IF(OpenCV_FOUND)
+  SET(OpenCV_USE_STATIC_LIBS ON)
+endif()
+
+if (DBoW3_FOUND)
+  SET(DBoW3_USE_STATIC_LIBS ON)
+else()
+  MESSAGE(FATAL_ERROR "Unable to find DBoW3 library. git clone https://github.com/rmsalinas/DBow3.git")
+endif()
 #-----------------------------------------------------------------------------------------------------------------------
 
 # Python binding
