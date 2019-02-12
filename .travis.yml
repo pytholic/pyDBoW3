@@ -9,7 +9,32 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - libboost-all-dev
-            - libopencv3-dev
+            - libgtk2.0-dev
+            - python-dev 
+            - python-numpy 
+            - libdc1394-22 
+            - libdc1394-22-dev 
+            - libhdf5-serial-dev 
+            - libjpeg-dev 
+            - libpng12-dev 
+            - libjasper-dev 
+            - libavcodec-dev 
+            - libavformat-dev 
+            - libswscale-dev 
+            - libgstreamer0.10-dev 
+            - libgstreamer-plugins-base0.10-dev 
+            - libv4l-dev 
+            - libtbb-dev 
+            - libqt4-dev 
+            - libmp3lame-dev 
+            - libopencore-amrnb-dev 
+            - libopencore-amrwb-dev 
+            - libtheora-dev 
+            - libvorbis-dev 
+            - libxvidcore-dev 
+            - x264 
+            - v4l-utils 
+            - unzip
 
 script:
   - chmod +x ./build.sh 
@@ -17,6 +42,6 @@ script:
   - chmod +x ./install/opencv.sh
   - chmod +x ./install/boost.sh 
   - install/boost.sh
-  - install/opencv.sh
+  - install/opencv.sh python2
   - install/dbow3.sh
-  - ./build.sh
+  - ./build.sh python2
