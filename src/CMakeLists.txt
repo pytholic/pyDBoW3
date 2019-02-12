@@ -104,7 +104,7 @@ endif()
 # Python binding
 #-----------------------------------------------------------------------------------------------------------------------
 
-FIND_PACKAGE(Boost 1.58)
+FIND_PACKAGE(Boost 1.54)
 
 IF(Boost_FOUND)
  IF (NOT UNIX)
@@ -126,11 +126,11 @@ FIND_PACKAGE(PythonInterp ${PYTHON_VERSION})
 if (PYTHONINTERP_FOUND)
   if (UNIX AND NOT APPLE)
     if (PYTHON_VERSION_MAJOR EQUAL 3)
-        FIND_PACKAGE(Boost 1.58 COMPONENTS python${PYTHON_VERSION_SUFFIX} REQUIRED)
+        FIND_PACKAGE(Boost 1.54 COMPONENTS python${PYTHON_VERSION_SUFFIX} REQUIRED)
         FIND_PACKAGE(PythonInterp 3)
         FIND_PACKAGE(PythonLibs 3 REQUIRED)
     else()
-        FIND_PACKAGE(Boost 1.58 COMPONENTS python REQUIRED)
+        FIND_PACKAGE(Boost 1.54 COMPONENTS python REQUIRED)
         FIND_PACKAGE(PythonInterp 2.7)
         FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
     endif()
