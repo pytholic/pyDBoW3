@@ -42,8 +42,8 @@ script:
   - chmod +x ./install/opencv.sh
   - chmod +x ./install/boost.sh 
   - cd install
-  - boost.sh
-  - opencv.sh python2
-  - dbow3.sh
+  - ./boost.sh
+  - ./opencv.sh python2
+  - ./dbow3.sh
   - cd ..
   - ./build.sh python2
