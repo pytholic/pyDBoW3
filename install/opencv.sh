@@ -4,9 +4,9 @@ CWD=`pwd`
 git clone https://github.com/opencv/opencv.git opencv3
 git clone https://github.com/opencv/opencv_contrib.git opencv3_contrib
 cd opencv3_contrib
-git checkout d879ea48b696ec9ba8d1d5fd4d9688fa230e8515
+#git checkout d879ea48b696ec9ba8d1d5fd4d9688fa230e8515
 cd ../opencv3
-git checkout 976ee4468276d8f90403cc0885b8fd8576c58f4d
+#git checkout 976ee4468276d8f90403cc0885b8fd8576c58f4d
 mkdir build
 cd build
 
