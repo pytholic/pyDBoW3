@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-apt-get install -y git cmake
+if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
+    echo "Using system opencv package"
+    exit
+fi
 
 if [ ! -d "$DIRECTORY" ]; then
-    mkdir -p $1
     apt-get -y install libopencv-dev build-essential cmake git libgtk2.0-dev pkg-config python-dev python-numpy libdc1394-22 libdc1394-22-dev libhdf5-serial-dev libjpeg-dev libpng12-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev libtbb-dev libqt4-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils unzip
-    cd $1
     git clone https://github.com/opencv/opencv.git opencv3
     git clone https://github.com/opencv/opencv_contrib.git opencv3_contrib
-    cd $1/opencv3_contrib
+    cd opencv3_contrib
     git checkout d879ea48b696ec9ba8d1d5fd4d9688fa230e8515
-    cd $1/opencv3
+    cd ../opencv3
     git checkout 976ee4468276d8f90403cc0885b8fd8576c58f4d
-    mkdir $1/opencv3
     mkdir build
 fi
 

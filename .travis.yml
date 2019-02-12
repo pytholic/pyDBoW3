@@ -10,7 +10,14 @@ matrix:
           packages:
             - libboost-all-dev
             - libopencv-dev
+    - os: windows
 
-script: 
-  - install/dbow3/install.sh
+script:
+  - chmod +x ./bash.sh 
+  - chmod +x ./install/dbow3.sh 
+  - chmod +x ./install/opencv.sh
+  - chmod +x ./install/boost.sh 
+  - install/boost.sh
+  - install/opencv.sh
+  - install/dbow3.sh
   - build.sh
