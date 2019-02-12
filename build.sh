@@ -7,7 +7,7 @@ mkdir build
 cd build
 
 if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
-    cmake -DBUILD_PYTHON3=ON -DDBoW3_LIBRARY=../../DBoW3/lib/libDBoW2.so -DCMAKE_BUILD_TYPE=Release ../src && make
+    cmake -DBUILD_PYTHON3=ON -DDBoW3_DIR=../../install/DBoW3/build -DCMAKE_BUILD_TYPE=Release ../src && make
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     PYTHON_VERSION=`python -c "import sys;t='{v[0]}.{v[1]}'.format(v=list(sys.version_info[:2]));sys.stdout.write(t)";`
     PYTHON_LIBRARY=/usr/local/Frameworks/Python.framework/Versions/$PYTHON_VERSION/lib/libpython$PYTHON_VERSION.dylib
