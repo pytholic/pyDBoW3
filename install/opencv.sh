@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CWD=`pwd`
 git clone https://github.com/opencv/opencv.git opencv3
 git clone https://github.com/opencv/opencv_contrib.git opencv3_contrib
 cd opencv3_contrib
@@ -11,8 +12,8 @@ cd build
 
 if [ "$1" = "python3" ]; then
     cmake -DCMAKE_BUILD_TYPE=RELEASE \
-          -DCMAKE_INSTALL_PREFIX=../../opencv3 \
-          -DOPENCV_EXTRA_MODULES_PATH=../../opencv3_contrib/modules \
+          -DCMAKE_INSTALL_PREFIX=$CWD/opencv3 \
+          -DOPENCV_EXTRA_MODULES_PATH=$CWD/opencv3_contrib/modules \
           -DWITH_CUDA=ON \
           -DCUDA_GENERATION=Kepler \
           -DWITH_CUBLAS=ON \
@@ -46,14 +47,13 @@ if [ "$1" = "python3" ]; then
           -DPYTHON_PACKAGES_PATH=$(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") \
           -DPYTHON3_EXECUTABLE=$(which python3) \
           -DPYTHON3_INCLUDE_DIR=$(python3 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
-          -DPYTHON3_LIBRARY=/home/cs/.pyenv/versions/3.6.0/lib/libpython3.6m.a \
           -DPYTHON3_PACKAGES_PATH=$(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") \
           ..
     make -j12 && make install
 else
     cmake -DCMAKE_BUILD_TYPE=RELEASE \
-          -DCMAKE_INSTALL_PREFIX=../../opencv3 \
-          -DOPENCV_EXTRA_MODULES_PATH=../../opencv3_contrib/modules \
+          -DCMAKE_INSTALL_PREFIX=$CWD/opencv3 \
+          -DOPENCV_EXTRA_MODULES_PATH=$CWD/opencv3_contrib/modules \
           -DWITH_CUDA=ON \
           -DCUDA_GENERATION=Kepler \
           -DWITH_CUBLAS=ON \
