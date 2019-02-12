@@ -182,7 +182,7 @@ endif ()
 if (NOT UNIX)
 	set_target_properties(pyDBoW3 PROPERTIES PREFIX "" SUFFIX ".pyd")
 else ()
-	#set_target_properties(pyDBoW3 PROPERTIES PREFIX "")
+	set_target_properties(pyDBoW3 PROPERTIES PREFIX "")
 endif()
 
 # ------------------------------------ DBOW3 section
