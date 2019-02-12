@@ -1,6 +1,6 @@
-// Author: Sudeep Pillai (spillai@csail.mit.edu)
+// Author: Andrius Mikonis (andrius.mikonis@gmail.com)
 // License: BSD
-// Last modified: Sep 14, 2014
+// Last modified: Feb 12, 2019
 
 // Wrapper for most external modules
 #include <boost/python.hpp>

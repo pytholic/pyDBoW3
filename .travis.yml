@@ -9,7 +9,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - libboost-all-dev
-            - libopencv-dev
+            - libopencv3-dev
 
 script:
   - chmod +x ./build.sh 
