@@ -39,7 +39,6 @@ matrix:
             - x264 
             - v4l-utils 
             - unzip
-  include:
     - os: linux
       env: 
         - BUILD_PYTHON="python2"
