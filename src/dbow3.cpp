@@ -109,8 +109,8 @@ public:
 		delete database;
 	}
 
-	void setVocabulary(const Vocabulary& vocabulary) {
-		database->setVocabulary(*vocabulary.vocabulary);
+	void setVocabulary(const Vocabulary& vocabulary, bool use_di, int di_levels=0) {
+		database->setVocabulary(*vocabulary.vocabulary, use_di, di_levels);
 	}
 
 	unsigned int add(const  cv::Mat & features) {
@@ -130,10 +130,10 @@ public:
 		database->load(filename);
 	}
 
-	void loadVocabulary(const std::string &filename) {
+	void loadVocabulary(const std::string &filename, bool use_di, int di_levels=0) {
 		DBoW3::Vocabulary voc;
 		voc.load(filename);
-		database->setVocabulary(voc);
+		database->setVocabulary(voc, use_di, di_levels);
 	}
 
 

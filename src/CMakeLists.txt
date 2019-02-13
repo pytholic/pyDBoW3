@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.8)
 project(pyDBoW3)
 
 # Project version
-#-----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 set(pyDBOW3_MAJOR_VERSION 1)
 set(pyDBOW3_MINOR_VERSION 1)
 set(pyDBOW3_PATCH_VERSION 1)
@@ -20,7 +20,7 @@ set(pyDBOW3_VERSION_ID ${pyDBOW3_MAJOR_VERSION}${pyDBOW3_MINOR_VERSION}${pyDBOW3
 
 
 # Building options
-#-----------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 option(BUILD_PYTHON3 "Build DBow3 Python3 binding instead of default Python2." OFF)
 OPTION(BUILD_STATICALLY_LINKED 	"Set to OFF to link with opencv and DBoW3 dynamically" ON)
 
@@ -36,7 +36,6 @@ endif()
 
 # CMake options
 #-----------------------------------------------------------------------------------------------------------------------
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall  -O3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -Wall -O3")
@@ -71,36 +70,24 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif ()
 
-
-# Compiler dependent settings
-#-----------------------------------------------------------------------------------------------------------------------
 if (CMAKE_COMPILER_IS_GNUCXX)
     add_definitions("-fPIC")
 endif ()
 
+
 #-----------------------------------------------------------------------------------------------------------------------
 
-LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../../../cmake_modules)
+#LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../../../cmake_modules)
 
+IF(NOT UNIX)
+  SET(OpenCV_USE_STATIC_LIBS ON)
+ENDIF()
 find_package(OpenCV REQUIRED)
+
+SET(DBoW3_USE_STATIC_LIBS ON)
 find_package(DBoW3 REQUIRED)
 
-
-IF(OpenCV_FOUND)
- IF(NOT UNIX)
-  SET(OpenCV_USE_STATIC_LIBS ON)
- ENDIF()
-endif()
-
-if (DBoW3_FOUND)
- IF(NOT UNIX)
-  SET(DBoW3_USE_STATIC_LIBS ON)
- ENDIF()
-else()
-  MESSAGE(FATAL_ERROR "Unable to find DBoW3 library. git clone https://github.com/rmsalinas/DBow3.git")
-endif()
 #-----------------------------------------------------------------------------------------------------------------------
-
 # Python binding
 #-----------------------------------------------------------------------------------------------------------------------
 
@@ -154,8 +141,17 @@ find_package(NumPy REQUIRED)
 if (NOT NUMPY_FOUND)
     message("Numpy not found")
 endif ()
-link_directories(${DBoW3_INCLUDE_DIRS}/..)
-INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${NUMPY_INCLUDES} ${DBoW3_INCLUDE_DIRS}/DBoW3 lib/)
+
+# This is a hack, since DBoW3 report weird library path
+LINK_DIRECTORIES(${DBoW3_INCLUDE_DIRS}/../lib)
+
+INCLUDE_DIRECTORIES(
+${OpenCV_INCLUDE_DIRS} 
+${Boost_INCLUDE_DIRS} 
+${PYTHON_INCLUDE_DIRS} 
+${NUMPY_INCLUDES} 
+${DBoW3_INCLUDE_DIRS}/DBoW3 
+lib/)
 
 if (BUILD_STATICALLY_LINKED)
     add_definitions(-DBOOST_PYTHON_STATIC_LIB)
@@ -166,16 +162,15 @@ add_library(np_opencv_converter lib/conversion.cpp lib/np_opencv_converter.cpp)
 target_compile_options(np_opencv_converter PRIVATE -DBOOST_ALL_NO_LIB)
 target_link_libraries(np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 
-set_target_properties(${LIBRARY_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-# Build test library
+# Build python extension 
 add_library(pyDBoW3 SHARED dbow3.cpp)
 target_compile_options(pyDBoW3 PRIVATE -DBOOST_ALL_NO_LIB)
 
 if (BUILD_STATICALLY_LINKED)
-	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${PROJECT_NAME} "-static")
+	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} "-static")
 else ()
-	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${PROJECT_NAME})
+	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${DBoW3_INCLUDE_DIRS}/../lib/libDBoW3.a)
 endif ()
 
 
@@ -184,8 +179,6 @@ if (NOT UNIX)
 else ()
 	set_target_properties(pyDBoW3 PROPERTIES PREFIX "")
 endif()
-
-# ------------------------------------ DBOW3 section
 
 # ----------------------------------------------------------------------------
 # display status message for important variables

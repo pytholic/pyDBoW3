@@ -8,6 +8,8 @@ cd build
 cmake -DOpenCV_DIR=$CWD/opencv3/build \
       -DBUILD_SHARED_LIBS=OFF \
       -DUSE_CONTRIB=ON \
-      -DBUID_UTILS=OFF .. && make && make install
-#      -DCMAKE_INSTALL_PREFIX=$CWD/DBow3 \
+      -DCMAKE_INSTALL_PREFIX=$CWD/DBow3 \
+      -DCMAKE_CXX_FLAGS="-fPIC" \
+      -DCMAKE_C_FLAGS="-fPIC" \
+      -DBUILD_UTILS=OFF .. && make && make install 
 cd ../..
