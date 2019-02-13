@@ -7,7 +7,7 @@
 namespace fs { namespace python {
 
 // Static PyInit
-static void py_init() {
+static int py_init() {
   Py_Initialize();
   import_array();
 }
