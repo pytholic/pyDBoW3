@@ -91,6 +91,9 @@ find_package(DBoW3 REQUIRED)
 # Python binding
 #-----------------------------------------------------------------------------------------------------------------------
 
+FIND_PACKAGE(PythonInterp ${PYTHON_VERSION})
+FIND_PACKAGE(PythonLibs ${PYTHON_VERSION} REQUIRED)
+FIND_PACKAGE(NumPy REQUIRED)
 FIND_PACKAGE(Boost 1.54)
 
 IF(Boost_FOUND)
@@ -108,39 +111,13 @@ ELSEIF(NOT Boost_FOUND)
   MESSAGE(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
 ENDIF()
 
-FIND_PACKAGE(PythonInterp ${PYTHON_VERSION})
 
-if (PYTHONINTERP_FOUND)
-  if (UNIX AND NOT APPLE)
-    if (PYTHON_VERSION_MAJOR EQUAL 3)
-        FIND_PACKAGE(Boost 1.54 COMPONENTS python${PYTHON_VERSION_SUFFIX} REQUIRED)
-        FIND_PACKAGE(PythonInterp 3)
-        FIND_PACKAGE(PythonLibs 3 REQUIRED)
-    else()
-        FIND_PACKAGE(Boost 1.54 COMPONENTS python REQUIRED)
-        FIND_PACKAGE(PythonInterp 2.7)
-        FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
-    endif()
-  else()	
-    if (PYTHON_VERSION_MAJOR EQUAL 3)
-        FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
-        FIND_PACKAGE(PythonInterp 3)
-        FIND_PACKAGE(PythonLibs 3 REQUIRED)
-    else()
-        FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
-        FIND_PACKAGE(PythonInterp 2.7)
-        FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
-    endif()
-  endif()
-else()
-    message("Python not found")
+if (UNIX)
+  FIND_PACKAGE(Boost 1.54 COMPONENTS python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
+else()	
+  FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
 endif()
 
-find_package(NumPy REQUIRED)
-
-if (NOT NUMPY_FOUND)
-    message("Numpy not found")
-endif ()
 
 # This is a hack, since DBoW3 report weird library path
 LINK_DIRECTORIES(${DBoW3_INCLUDE_DIRS}/../lib)
@@ -154,30 +131,29 @@ ${DBoW3_INCLUDE_DIRS}/DBoW3
 lib/)
 
 if (BUILD_STATICALLY_LINKED)
-    add_definitions(-DBOOST_PYTHON_STATIC_LIB)
+    ADD_DEFINITIONS(-DBOOST_PYTHON_STATIC_LIB)
 endif ()
 
 # Build np<=>opencv converter library
-add_library(np_opencv_converter lib/conversion.cpp lib/np_opencv_converter.cpp)
-target_compile_options(np_opencv_converter PRIVATE -DBOOST_ALL_NO_LIB)
-target_link_libraries(np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
+ADD_LIBRARY(np_opencv_converter lib/conversion.cpp lib/np_opencv_converter.cpp)
+TARGET_COMPILE_OPTIONS(np_opencv_converter PRIVATE -DBOOST_ALL_NO_LIB)
+TARGET_LINK_LIBRARIES(np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 
 
 # Build python extension 
-add_library(pyDBoW3 SHARED dbow3.cpp)
-target_compile_options(pyDBoW3 PRIVATE -DBOOST_ALL_NO_LIB)
+ADD_LIBRARY(pyDBoW3 SHARED dbow3.cpp)
+TARGET_COMPILE_OPTIONS(pyDBoW3 PRIVATE -DBOOST_ALL_NO_LIB)
 
 if (BUILD_STATICALLY_LINKED)
-	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} "-static")
+  TARGET_LINK_LIBRARIES(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} "-static")
 else ()
-	target_link_libraries(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${DBoW3_INCLUDE_DIRS}/../lib/libDBoW3.a)
+  TARGET_LINK_LIBRARIES(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES} ${DBoW3_INCLUDE_DIRS}/../lib/libDBoW3.a)
 endif ()
 
-
 if (NOT UNIX)
-	set_target_properties(pyDBoW3 PROPERTIES PREFIX "" SUFFIX ".pyd")
+  SET_TARGET_PROPERTIES(pyDBoW3 PROPERTIES PREFIX "" SUFFIX ".pyd")
 else ()
-	set_target_properties(pyDBoW3 PROPERTIES PREFIX "")
+  SET_TARGET_PROPERTIES(pyDBoW3 PROPERTIES PREFIX "")
 endif()
 
 # ----------------------------------------------------------------------------

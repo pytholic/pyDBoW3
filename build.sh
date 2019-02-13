@@ -18,8 +18,14 @@ cd ..
 mkdir build
 cd build
 
+if [[ "$BUILD_PYTHON" == "python3" ]]; then
+  BUILD_PYTHON3="ON"
+else
+  BUILD_PYTHON3="OFF"
+fi
+
 if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
-    cmake -DBUILD_PYTHON3=OFF \
+    cmake -DBUILD_PYTHON3=$BUILD_PYTHON3 \
           -DBUILD_STATICALLY_LINKED=OFF \
           -DOpenCV_DIR=$CWD/install/opencv3/build \
           -DDBoW3_DIR=$CWD/install/DBow3/build \
