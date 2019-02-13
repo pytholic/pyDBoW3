@@ -4,9 +4,9 @@ CWD=`pwd`
 git clone https://github.com/opencv/opencv.git opencv3
 git clone https://github.com/opencv/opencv_contrib.git opencv3_contrib
 cd opencv3_contrib
-#git checkout d879ea48b696ec9ba8d1d5fd4d9688fa230e8515
+git checkout 3.4.2
 cd ../opencv3
-#git checkout 976ee4468276d8f90403cc0885b8fd8576c58f4d
+git checkout 3.4.2
 mkdir build
 cd build
 
@@ -14,7 +14,7 @@ if [ "$1" = "python3" ]; then
     cmake -DCMAKE_BUILD_TYPE=RELEASE \
           -DCMAKE_INSTALL_PREFIX=$CWD/opencv3 \
           -DOPENCV_EXTRA_MODULES_PATH=$CWD/opencv3_contrib/modules \
-          -DWITH_CUDA=ON \
+          -DWITH_CUDA=OFF \
           -DCUDA_GENERATION=Kepler \
           -DWITH_CUBLAS=ON \
           -DCUDA_FAST_MATH=ON \
@@ -39,7 +39,7 @@ if [ "$1" = "python3" ]; then
           -DBUILD_PERF_TESTS=OFF \
           -DBUILD_TESTS=OFF \
           -DBUILD_opencv_dnn=OFF \
-          -DBUILD_opencv_xfeatures2d=OFF \
+          -DBUILD_opencv_xfeatures2d=ON \
           -DBUILD_opencv_python2=OFF \
           -DBUILD_NEW_PYTHON_SUPPORT=ON \
           -DPYTHON_EXECUTABLE=$(which python3) \
@@ -54,7 +54,7 @@ else
     cmake -DCMAKE_BUILD_TYPE=RELEASE \
           -DCMAKE_INSTALL_PREFIX=$CWD/opencv3 \
           -DOPENCV_EXTRA_MODULES_PATH=$CWD/opencv3_contrib/modules \
-          -DWITH_CUDA=ON \
+          -DWITH_CUDA=OFF \
           -DCUDA_GENERATION=Kepler \
           -DWITH_CUBLAS=ON \
           -DCUDA_FAST_MATH=ON \
@@ -79,7 +79,7 @@ else
           -DBUILD_PERF_TESTS=OFF \
           -DBUILD_TESTS=OFF \
           -DBUILD_opencv_dnn=OFF \
-          -DBUILD_opencv_xfeatures2d=OFF \
+          -DBUILD_opencv_xfeatures2d=ON \
           -DBUILD_opencv_python2=ON \
           -DPYTHON_EXECUTABLE=$(which python) \
           -DPYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \

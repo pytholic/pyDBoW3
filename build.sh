@@ -4,6 +4,17 @@ set -x
 
 cd ${0%%$(basename $0)}
 CWD=`pwd`
+
+cd install
+
+chmod +x boost.sh && ./boost.sh || exit 1
+
+chmod +x opencv.sh && ./opencv.sh || exit 1
+
+chmod +x dbow3.sh && ./dbow3.sh || exit 1
+
+cd ..
+
 mkdir build
 cd build
 

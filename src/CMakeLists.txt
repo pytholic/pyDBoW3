@@ -38,8 +38,8 @@ endif()
 #-----------------------------------------------------------------------------------------------------------------------
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall  -O3 -fPIC ")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -Wall -O3 -fPIC")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall  -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -Wall -O3")
 
 # Check C++11 or C++0x support
 include(CheckCXXCompilerFlag)
