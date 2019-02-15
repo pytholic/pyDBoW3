@@ -80,3 +80,5 @@ matrix:
 script:
   - chmod +x build.sh
   - ./build.sh
+  - chmod +x makedist.sh
+  - ./makedist.sh

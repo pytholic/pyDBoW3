@@ -33,9 +33,6 @@ if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
           -DDBoW3_DIR=$CWD/install/DBow3/build \
           -DDBoW3_INCLUDE_DIRS=$CWD/install/DBow3/src \
           -DCMAKE_BUILD_TYPE=Release ../src && make
-
-    ./makedist.sh
-
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     : # no support
 elif [[ "$OSTYPE" == "cygwin" ]]; then
