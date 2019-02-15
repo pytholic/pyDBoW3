@@ -20,8 +20,10 @@ cd build
 
 if [[ "$BUILD_PYTHON" == "python3" ]]; then
   BUILD_PYTHON3="ON"
+  pip3 install wheel
 else
   BUILD_PYTHON3="OFF"
+  pip install wheel
 fi
 
 if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
@@ -31,11 +33,22 @@ if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
           -DDBoW3_DIR=$CWD/install/DBow3/build \
           -DDBoW3_INCLUDE_DIRS=$CWD/install/DBow3/src \
           -DCMAKE_BUILD_TYPE=Release ../src && make
+
+    cd build
+    mkdir dist
+    cd dist
+    mkdir pyDBoW3
+    cp ../pyDBoW3.so pyDBoW3
+    cp ../../src/__init__.py pyDBoW3
+    cp ../../src/setup.py .
+    cp ../../src/MANIFEST.in .
+
+    python setup.py bdist_wheel
+
+    cd ../..
+
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    PYTHON_VERSION=`python -c "import sys;t='{v[0]}.{v[1]}'.format(v=list(sys.version_info[:2]));sys.stdout.write(t)";`
-    PYTHON_LIBRARY=/usr/local/Frameworks/Python.framework/Versions/$PYTHON_VERSION/lib/libpython$PYTHON_VERSION.dylib
-    PYTHON_INCLUDE_DIR=/usr/local/Frameworks/Python.framework/Versions/$PYTHON_VERSION/Headers/
-    cmake -DPYTHON_LIBRARY=$PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR -DCMAKE_BUILD_TYPE=RELEASE ../src && make
+    : # no support
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     : # POSIX compatibility layer and Linux environment emulation for Windows
 elif [[ "$OSTYPE" == "msys" ]]; then

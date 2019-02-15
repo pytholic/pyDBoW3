@@ -62,6 +62,7 @@ implementation since OpenCV BowKMeansTrainer doesn't work with binary features.
 If you wish you use it on your own it is as easy as:
 
 .. code-block:: python
+
     import pyDBoW3 as bow
     voc = bow.Vocabulary()
     voc.load("/slamdoom/libs/orbslam2/Vocabulary/ORBvoc.txt")
@@ -81,7 +82,7 @@ If you wish you use it on your own it is as easy as:
     del db
 
 
-This repository was created based on `<pyORBSLAM2 https://github.com/raulmur/ORB_SLAM2>`_ and
+This repository was created based on `pyORBSLAM2 <https://github.com/raulmur/ORB_SLAM2>`_ and
 ndarray to cv::Mat conversion on `numpy-opencv-converter <https://github.com/GarrickLin/numpy-opencv-converter>`_.
 
 .. note::
@@ -91,6 +92,8 @@ ndarray to cv::Mat conversion on `numpy-opencv-converter <https://github.com/Gar
     * Windows 10 msvc 2017 x64
     * xenial with Python 2.7, libboost 1.54 (autobuild with travis)
     * xenial with Python 3.5, libboost 1.54 (autobuild with travis)
+
+.. _install:
 
 Get started
 -----------
