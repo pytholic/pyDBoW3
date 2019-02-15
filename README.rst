@@ -53,10 +53,10 @@
 pyDBoW3
 ==============
 
-Ultra-fast Boost.Python interface for `DBoW3 https://github.com/rmsalinas/DBow3`_
+Ultra-fast Boost.Python interface for `DBoW3 <https://github.com/rmsalinas/DBow3>`_
 
 This repo was created in order to interface DBoW algorithm from python in another project
-`EasyVision https://github.com/foxis/EasyVision`_. It is being used for a simple topological SLAM
+`EasyVision <https://github.com/foxis/EasyVision>`_. It is being used for a simple topological SLAM
 implementation since OpenCV BowKMeansTrainer doesn't work with binary features.
 
 If you wish you use it on your own it is as easy as:
@@ -81,15 +81,16 @@ If you wish you use it on your own it is as easy as:
     del db
 
 
-This repository was created based on `pyORBSLAM2 https://github.com/raulmur/ORB_SLAM2`_ and
-ndarray to cv::Mat conversion on `numpy-opencv-converter https://github.com/GarrickLin/numpy-opencv-converter`_.
+This repository was created based on `<pyORBSLAM2 https://github.com/raulmur/ORB_SLAM2>`_ and
+ndarray to cv::Mat conversion on `numpy-opencv-converter <https://github.com/GarrickLin/numpy-opencv-converter>`_.
 
 .. note::
+
   Tested on these platforms:
     * OpenCV 3.4.2.16
     * Windows 10 msvc 2017 x64
-    * xenial with Python 2.7
-    * xenial with Python 3.5
+    * xenial with Python 2.7, libboost 1.54 (autobuild with travis)
+    * xenial with Python 3.5, libboost 1.54 (autobuild with travis)
 
 Get started
 -----------
@@ -121,7 +122,7 @@ to your virtual environment.
 Unix
 ++++
 
-Use build.sh to build build/pyDBoW.so, which you should then put on your PYTHONPATH.
+Use ``build.sh`` to build ``build/pyDBoW.so``, which you should then put on your ``PYTHONPATH``.
 
 Check ``.travis.yml`` for environment variables.
 
