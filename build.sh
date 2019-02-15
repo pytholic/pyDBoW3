@@ -34,18 +34,7 @@ if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
           -DDBoW3_INCLUDE_DIRS=$CWD/install/DBow3/src \
           -DCMAKE_BUILD_TYPE=Release ../src && make
 
-    cd build
-    mkdir dist
-    cd dist
-    mkdir pyDBoW3
-    cp ../pyDBoW3.so pyDBoW3
-    cp ../../src/__init__.py pyDBoW3
-    cp ../../src/setup.py .
-    cp ../../src/MANIFEST.in .
-
-    python setup.py bdist_wheel
-
-    cd ../..
+    ./makedist.sh
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     : # no support
