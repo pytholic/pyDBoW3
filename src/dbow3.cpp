@@ -183,6 +183,7 @@ namespace fs {
 				.def("save", &Database::save)
 				.def("load", &Database::load)
 				.def("loadVocabulary", &Database::loadVocabulary)
+				.def("add", &Database::add)
 				.def("query", &Database::query);
 
 			py::class_<DBoW3::Result>("Result")
