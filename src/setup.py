@@ -1,5 +1,5 @@
 from setuptools import setup, Extension
-
+from pyDBoW3 import __version__, __short_description__, __author__, __author_email__
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
@@ -17,12 +17,12 @@ def readme():
 
 
 setup(name='pyDBoW3',
-      version='0.1',
-      description='Python wrapper for DBoW3 library',
+      version=__version__,
+      description=__short_description__,
       long_description=readme(),
       url='http://github.com/foxis/pyDBoW3',
-      author='Andrius Mikonis',
-      author_email='andrius.mikonis@gmail.com',
+      author=__author__,
+      author_email=__author_email__,
       classifiers=[
           'Development Status :: 3 - Alpha',
           'License :: OSI Approved :: MIT License',
