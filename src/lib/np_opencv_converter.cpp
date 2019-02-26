@@ -3,6 +3,7 @@
 // Last modified: Sep 14, 2014
 
 #include "np_opencv_converter.hpp"
+#include "DBoW3.h"
 
 namespace fs { namespace python {
 
@@ -82,6 +83,8 @@ bool init_and_export_converters() {
   Mat_PyObject_converter< cv::Mat3d >();
 
   // add more if needed
+  expose_template_type< std::vector<DBoW3::Result> >();
+  expose_template_type< DBoW3::BowVector >();
 
   return true;
 }

@@ -4,7 +4,7 @@
 Python wrappers for DBoW3 library
 """
 
-__version__ = "0.2"
+__version__ = "0.3"
 __short_description__ = "Python wrappers for DBoW3 library."
 __license__ = "MIT"
 __author__ = "Andrius Mikonis"

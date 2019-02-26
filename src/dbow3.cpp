@@ -173,7 +173,7 @@ namespace fs {
 				.def("load", &Vocabulary::load)
 				.def("save", &Vocabulary::save)
 				.def("create", &Vocabulary::create)
-				.def("transform", &Vocabulary::transform)
+				.def("transform", &Vocabulary::transform, py::return_value_policy<py::return_by_value>())
 				.def("score", &Vocabulary::score)
 				.def("clear", &Vocabulary::clear);
 
@@ -184,7 +184,7 @@ namespace fs {
 				.def("load", &Database::load)
 				.def("loadVocabulary", &Database::loadVocabulary)
 				.def("add", &Database::add)
-				.def("query", &Database::query);
+				.def("query", &Database::query, py::return_value_policy<py::return_by_value>());
 
 			py::class_<DBoW3::Result>("Result")
 				.def_readonly("Id", &DBoW3::Result::Id)
