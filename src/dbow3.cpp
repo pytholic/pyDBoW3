@@ -119,6 +119,7 @@ public:
 
 	std::vector<DBoW3::Result> query(const  cv::Mat &features, int max_results = 1, int max_id = -1) {
 		DBoW3::QueryResults results;
+		database->query(features, results, max_results, max_id);
 		return results;
 	}
 
