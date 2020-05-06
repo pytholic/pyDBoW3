@@ -129,7 +129,28 @@ Use ``build.sh`` to build ``build/pyDBoW.so``, which you should then put on your
 
 Check ``.travis.yml`` for environment variables.
 
+Mac OSX
+++++
+Use ``build.sh`` to build ``build/pyDBoW.so``, which you should then put on your ``PYTHONPATH``.
+
+Check ``.travis.yml`` for environment variables.
+
 .. note::
 
   You will probably need to run ``sudo make install`` for ``install/opencv/build`` to install it on your system.
+
+Using under a conda environment (to use pre-installed version of OpenCV)
+++++
+Build a conda environment, adding boost and cmake to it, something like:
+
+.. code-block:: bash
+   
+   conda create -n test_env python=3.5 opencv=3.3.1 cmake boost matplotlib numpy
+   
+   ## Unlink system boost installed by brew
+   brew unlink boost
+   
+Use ``build_under_conda.sh`` to build ``build/pyDBoW.dylink`` which is symlinked to ``build/pyDBoW.so``. 
+Add this to your conda environment by creating a ``.PTH`` file under ``/Users/<user_name>/anaconda3/envs/test_env/lib/python3.5/site-packages/pydbow3.pth`` containing ``/Users/<user_name>/pyDBoW3/build``
+
 
