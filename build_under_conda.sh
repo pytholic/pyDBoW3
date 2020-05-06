@@ -9,8 +9,6 @@ cd install
 
 chmod +x boost.sh && ./boost.sh || exit 1
 
-chmod +x opencv.sh && ./opencv.sh || exit 1
-
 chmod +x dbow3.sh && ./dbow3.sh || exit 1
 
 cd ..
@@ -26,15 +24,14 @@ else
   pip install wheel
 fi
 
-if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" ]]; then
+if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "linux" || "$OSTYPE" == "darwin"* ]]; then
     cmake -DBUILD_PYTHON3=$BUILD_PYTHON3 \
           -DBUILD_STATICALLY_LINKED=OFF \
-          -DOpenCV_DIR=$CWD/install/opencv3/build \
           -DDBoW3_DIR=$CWD/install/DBow3/build \
           -DDBoW3_INCLUDE_DIRS=$CWD/install/DBow3/src \
           -DCMAKE_BUILD_TYPE=Release ../src && make
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    : # no support
+#elif [[ "$OSTYPE" == "darwin"* ]]; then
+#    : # no support
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     : # POSIX compatibility layer and Linux environment emulation for Windows
 elif [[ "$OSTYPE" == "msys" ]]; then
@@ -46,7 +43,6 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     : # Unknown.
 fi
-
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     ln -s pyDBoW3.dylib pyDBoW3.so
