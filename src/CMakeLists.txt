@@ -60,6 +60,7 @@ endif()
 
 if (COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
+    cmake_policy(SET CMP0042 NEW)
 endif (COMMAND cmake_policy)
 
 # Add cmake_modules to module
@@ -118,12 +119,13 @@ SET(BOOST_ALL_NO_LIB ON)
 
 FIND_PACKAGE(Boost 1.54)
 
-if (UNIX)
-  FIND_PACKAGE(Boost 1.54 COMPONENTS python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
-else()	
+if (NOT UNIX)
   FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
+elseif(APPLE)	
+  FIND_PACKAGE(Boost 1.54 COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
+else()
+  FIND_PACKAGE(Boost 1.54 COMPONENTS python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
 endif()
-
 
 # This is a hack, since DBoW3 report weird library path
 if (UNIX)
@@ -157,9 +159,12 @@ endif ()
 # Build np<=>opencv converter library
 ADD_LIBRARY(np_opencv_converter lib/conversion.cpp lib/np_opencv_converter.cpp)
 TARGET_COMPILE_OPTIONS(np_opencv_converter PRIVATE -DBOOST_ALL_NO_LIB)
-if (UNIX)
-  TARGET_LINK_LIBRARIES(np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
+if (NOT UNIX)
+elseif (APPLE)
+  TARGET_LINK_LIBRARIES(np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES})
+  set_target_properties(np_opencv_converter PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 else()
+  TARGET_LINK_LIBRARIES(np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 endif()
 
 
@@ -169,15 +174,15 @@ TARGET_COMPILE_OPTIONS(pyDBoW3 PRIVATE -DBOOST_ALL_NO_LIB)
 
 if (NOT UNIX)
   TARGET_LINK_LIBRARIES(pyDBoW3 np_opencv_converter ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${DBoW3_LIBRARIES} "-static")
+  SET_TARGET_PROPERTIES(pyDBoW3 PROPERTIES PREFIX "" SUFFIX ".pyd")
+elseif (APPLE)
+  TARGET_LINK_LIBRARIES(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES})
+  SET_TARGET_PROPERTIES(pyDBoW3 PROPERTIES PREFIX "" LINK_FLAGS "-undefined dynamic_lookup")
 else ()
   TARGET_LINK_LIBRARIES(pyDBoW3 np_opencv_converter ${DBoW3_LIBRARIES})
+  SET_TARGET_PROPERTIES(pyDBoW3 PROPERTIES PREFIX "")
 endif ()
 
-if (NOT UNIX)
-  SET_TARGET_PROPERTIES(pyDBoW3 PROPERTIES PREFIX "" SUFFIX ".pyd")
-else ()
-  SET_TARGET_PROPERTIES(pyDBoW3 PROPERTIES PREFIX "")
-endif()
 
 # ----------------------------------------------------------------------------
 # display status message for important variables
