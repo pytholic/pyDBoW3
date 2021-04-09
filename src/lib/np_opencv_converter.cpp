@@ -20,7 +20,7 @@ bool init_and_export_converters() {
   if (export_type_conversions_once)
     return false;
   
-  std::cerr << "PYTHON TYPE CONVERTERS exported" << std::endl;
+  //std::cerr << "PYTHON TYPE CONVERTERS exported" << std::endl;
   export_type_conversions_once = true;
 
   // Py_Init and array import
