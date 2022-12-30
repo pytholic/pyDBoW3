@@ -2,7 +2,6 @@
 
 set -x
 
-cd ${0%%$(basename $0)}
 CWD=`pwd`
 
 cd install
